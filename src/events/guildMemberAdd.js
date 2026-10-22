@@ -18,7 +18,7 @@ const event = {
   },
 };
 
-const getWelcomeMessage = (userId) => {
+export const getWelcomeMessage = (userId) => {
   /*
     this function returns a welcome message.
     Play around with the code here and customise the welcome message.
