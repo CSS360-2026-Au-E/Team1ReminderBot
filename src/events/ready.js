@@ -1,3 +1,4 @@
+import { startReminderScheduler } from "../helpers/reminderScheduler.js";
 const event = {
   name: "ready",
   once: true,
@@ -10,6 +11,7 @@ const event = {
     ############################################################
   `);
     await registerCommands(client);
+    startReminderScheduler(client);
   },
 };
 
