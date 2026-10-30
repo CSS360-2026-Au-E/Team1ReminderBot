@@ -1,8 +1,7 @@
 
 import { strict as assert } from "node:assert";
+import store from "../src/helpers/reminderStore.js";
 
-
-const store = require("../src/helpers/reminderStore.js");
 describe("Reminder history and recurrence", function () {
   it("shows completed reminders in history", function () {
     const userId = "history-test";
