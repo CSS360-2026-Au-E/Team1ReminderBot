@@ -1,28 +1,44 @@
 # Reminder Bot
 
-A Discord bot that helps you remember what matters. Set a reminder, and the bot will ping you in the server or DM you when it's time.
+A Discord bot that helps study groups remember what matters. Set a reminder with a slash command, add early pings before the event, and the bot DMs you when it's time.
 
-## Features
+## Commands (v1.0)
 
-- Set one-time reminders with slash commands (e.g. `/remind 30m take out the trash`)
-- Recurring reminders (daily, weekly)
-- View and delete your upcoming reminders
-- Reminders are saved, so they survive bot restarts
-- Lets you create events that the bot will remember and store.
-- Automatically pings you or your group in advance (1hr, 30min, 10min).
-- Helps study groups stay organized without missing assignments.
+| Command | What it does |
+|---|---|
+| `/remind amount unit message` | Quick reminder after a set amount of time, e.g. `amount:30 unit:Minutes` |
+| `/reminder message amount unit` | Same, with the `before` option for early pings |
+| `/reminder message date` | Remind me at a date and time (Pacific), e.g. `date:2026-11-05 14:30` |
+| `before` option on `/reminder` | Extra early pings before the event, up to 5, e.g. `before:1d, 30m, 10m` |
+| `/repeatreminder message repeat minutes` | A daily or weekly reminder, starting in a set number of minutes |
+| `/reminders` | View your upcoming and past reminders |
+| `/ping` | Check the bot is online and see its latency |
+| `/testwelcome [user]` | Replay the welcome message a new member gets |
+
+The bot also welcomes new members when they join the server.
+
+## Known limits
+
+- Reminders are kept in memory. If the bot restarts, saved reminders are lost.
+- Dates are read as Pacific time. Discord shows the confirmed times in each person's own time zone.
+- Reminders are sent by DM, so members need DMs from server members turned on.
+
+## Running it
+
+1. Copy your bot token into a `.env` file as `TOKEN=...` (never commit it).
+2. `npm install`
+3. `npm start`
+
+Run the tests with `npm test`. They also run on every pull request.
 
 ## Project Status
-- Currently setting up project environments and repository structure (Bot Project Task 1).
+
+- v1.0 released (Bot Project Task 3): reminders by time or date, early pings, recurring reminders, reminder history.
 
 ## Team Members
-- Khang Hoang Nguyen
-- Sameer
-- Ethan F
 
-## Features
-
-- Set one-time reminders with slash commands (e.g. `/remind 30m take out the trash`)
-- Recurring reminders (daily, weekly)
-- View and delete your upcoming reminders
-- Reminders are saved, so they survive bot restarts
+- Khang Nguyen
+- Tarang (TJ) Jammalamadaka
+- Sameer Ahmed Khan
+- Ayman Tuaum
+- Ethan Frausto
