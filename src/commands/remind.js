@@ -34,11 +34,6 @@ const command = {
 
   async execute(interaction) {
     try {
-      // Debug: Check options received from Discord.
-      console.log(
-        "REMINDER OPTIONS:",
-        interaction.options.data
-      );
 
       const amount = interaction.options.getInteger("amount");
       const unit = interaction.options.getString("unit");
