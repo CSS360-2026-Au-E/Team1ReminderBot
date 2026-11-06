@@ -28,19 +28,25 @@ flowchart TD
 
 This control flow graph shows how our Discord bot creates reminders. First, the bot gets the amount, time unit, and message from the user. It checks if any information is missing and if the time unit and duration are valid. If everything is correct, the bot calculates when the reminder is due, saves it, and sends a confirmation message. If something goes wrong, the bot catches the error and sends an error message to the user.
   
-## Data Flow Diagram – View Reminders
+## Data Flow Diagram – View and Complete Reminders
 
 ```mermaid
 flowchart LR
     U[Discord user] -->|/reminders command| D[Discord]
-    D -->|interaction with user ID| C[src/commands/reminders.js]
-    C -->|user ID| S[(In-memory reminders array)]
+    D -->|command interaction and user ID| C[src/commands/reminders.js]
+    C -->|user ID query| S[(In-memory reminders array)]
     S -->|active reminders and history| C
-    C -->|formatted reminder lists| D
-    D -->|ephemeral reply| U
+    C -->|formatted list with Mark done buttons| D
+    D -->|private reminder list| U
+    U -->|clicks Mark done| D
+    D -->|button interaction and user ID| I[src/events/interactionCreate.js]
+    I -->|owner-checked completion update| S
+    S -->|updated reminder state| I
+    I -->|refreshed private list| D
+    D -->|updated list| U
 ```
 
 ### Explanation
-When a user runs /reminders, Discord sends the interaction and the user's ID to src/commands/reminders.js. The command requests active reminders and reminder history for that user from src/helpers/reminderStore.js. The store filters its in-memory reminders array and returns the matching data. The command formats the results and replies ephemerally, so only that user can see the response.
+When a user runs /reminders, Discord sends the interaction and user ID to src/commands/reminders.js. The command requests that user's active reminders and history from src/helpers/reminderStore.js, formats the results, and replies privately with a Mark done button for each active reminder.
 
-Reminder data is held in memory while the bot is running and is lost when the bot restarts.
+When the user clicks Mark done, src/events/interactionCreate.js routes the button interaction to the reminders command. The store checks that the reminder belongs to the clicking user, removes it from the active list, and records when it was marked done. The bot refreshes the private list to show the updated state. Reminder data is held in memory and is lost when the bot restarts.
