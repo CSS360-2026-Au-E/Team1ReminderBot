@@ -2,7 +2,15 @@
 
 ## Purpose
 
+This report reviews the bot for design issues, security risks, and possible improvements.
+
 ## Team Contributions
+
+### Khang Nguyen
+
+- **Analysis areas:** #3 Cohesion and Coupling; #5 Threat Model
+- **Contribution:** Reviewed the reminder command, reminder store, and interaction handler. Documented module responsibilities, dependencies, in-memory data risks, and possible protections.
+- **Report sections:** [Cohesion and Coupling](#cohesion-and-coupling), [Threat Model](#threat-model)
 
 ### Technical Debt and Unit Tests
 
@@ -30,6 +38,12 @@ The store keeps reminders in an in-memory array. This means the data is lost whe
 #### Review limit
 
 This review covers the two files listed above. It does not measure coupling across every part of the bot.
+
+#### Files reviewed
+
+- [`src/commands/reminder.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/commands/reminder.js)
+- [`src/helpers/reminderStore.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/helpers/reminderStore.js)
+- [`ARCHITECTURE.md`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/ARCHITECTURE.md)
 
 ### Threat Model
 **Contributor:** Khang Nguyen
@@ -72,3 +86,11 @@ The commands use Discord slash-command options to limit some input. For example,
 #### Review limits
 
 This review covers only the files I examined. I did not check every file, the live bot's Discord permissions, or how its token is stored. The finding about missing limits applies only to the reviewed files; another file may add a limit.
+
+#### Files reviewed
+
+- [`src/commands/reminder.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/commands/reminder.js)
+- [`src/commands/remind.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/commands/remind.js)
+- [`src/commands/repeatReminder.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/commands/repeatReminder.js)
+- [`src/events/interactionCreate.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/events/interactionCreate.js)
+- [`src/helpers/reminderStore.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/helpers/reminderStore.js)
