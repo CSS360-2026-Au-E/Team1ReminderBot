@@ -12,11 +12,11 @@ This report reviews the bot for design issues, security risks, and possible impr
 - **Contribution:** Reviewed the reminder command, reminder store, and interaction handler. Documented module responsibilities, dependencies, in-memory data risks, and possible protections.
 - **Report sections:** [Cohesion and Coupling](#cohesion-and-coupling), [Threat Model](#threat-model)
 
-### Technical Debt and Unit Tests
+## Technical Debt and Unit Tests
 
-### Cyclomatic Complexity and Smoke Test
+## Cyclomatic Complexity and Smoke Test
 
-### Cohesion and Coupling
+## Cohesion and Coupling
 **Contributor:** Khang Nguyen
 
 #### Scope
@@ -37,7 +37,7 @@ The store keeps reminders in an in-memory array. This means the data is lost whe
 
 #### Review limit
 
-This review covers the two files listed above. It does not measure coupling across every part of the bot.
+This review focuses on two implementation files. I also used ARCHITECTURE.md as supporting context. It does not measure coupling across every part of the bot.
 
 #### Files reviewed
 
@@ -45,7 +45,7 @@ This review covers the two files listed above. It does not measure coupling acro
 - [`src/helpers/reminderStore.js`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/src/helpers/reminderStore.js)
 - [`ARCHITECTURE.md`](https://github.com/CSS360-2026-Au-E/Team1ReminderBot/blob/main/ARCHITECTURE.md)
 
-### Threat Model
+## Threat Model
 **Contributor:** Khang Nguyen
 
 #### Scope
