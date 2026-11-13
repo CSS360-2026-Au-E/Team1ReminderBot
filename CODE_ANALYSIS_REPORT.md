@@ -12,7 +12,43 @@ This report reviews the bot for design issues, security risks, and possible impr
 - **Contribution:** Reviewed the reminder command, reminder store, and interaction handler. Documented module responsibilities, dependencies, in-memory data risks, and possible protections.
 - **Report sections:** [Cohesion and Coupling](#cohesion-and-coupling), [Threat Model](#threat-model)
 
+### Sameer Khan
+
+- **Analysis areas:** #1 Technical Debt and Code Smells; #7 Unit Tests
+- **Contribution:** Ran ESLint, identified code problems, fixed a test import error, and successfully ran 3 reminder unit tests.
+- **Report section:** [Technical Debt and Unit Tests](#technical-debt-and-unit-tests)
+  
 ## Technical Debt and Unit Tests
+**Contributor:** Sameer Khan
+
+### Technical Debt and Code Smells
+
+I ran `npx eslint src tests` to check the bot's code. ESLint found 11 errors and 0 warnings.
+
+Two errors were unused variables in guildMemberAdd.js and reminderScheduler.js. The other nine errors came from ESLint not recognizing the Mocha test functions describe and it.
+
+These issues show that the code needs cleanup and better ESLint configuration.
+
+### Unit Tests
+
+I checked three reminder unit tests:
+1. Completed reminders appear in history.
+2. Daily reminders schedule their next run correctly.
+3. Weekly reminders schedule their next run correctly.
+
+At first, npm test failed because reminderStore.spec.js used require() in an ES module environment. I changed it to an import statement.
+
+After fixing the problem, I ran npm test again and all 7 tests passed.
+
+### Findings and Improvements
+
+The bot's reminder tests are working, but there are still some issues to fix. We should clean up unused variables and update ESLint to recognize test functions. This would make the code easier to maintain and test.
+
+### Evidence
+
+- ESLint: 11 errors, 0 warnings.
+- Unit tests: 7 passing.
+- Fix commit: https://github.com/CSS360-2026-Au-E/Team1ReminderBot/commit/f35f06a
 
 ## Cyclomatic Complexity and Smoke Test
 
