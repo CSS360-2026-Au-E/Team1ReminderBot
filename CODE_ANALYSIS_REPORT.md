@@ -51,7 +51,61 @@ The bot's reminder tests are working, but there are still some issues to fix. We
 - Fix commit: https://github.com/CSS360-2026-Au-E/Team1ReminderBot/commit/f35f06a
 
 ## Cyclomatic Complexity and Smoke Test
+### Contributor: Atuaum
 
+**Analysis Areas:** #2 Cyclomatic Complexity and #8 Smoke Test
+
+### Cyclomatic Complexity
+
+I examined two JavaScript files in Team1ReminderBot: `src/events/messageCreate.js` and `src/events/interactionCreate.js`.
+
+I manually calculated cyclomatic complexity by starting with 1 and counting decision points, including `if` statements, loops, and logical operators (`&&` and `||`).
+
+**Results:**
+
+| File | Cyclomatic Complexity |
+|---|---|
+| `messageCreate.js` | 9 |
+| `interactionCreate.js` | 10 |
+
+Both functions have moderate complexity.
+
+I found that `messageCreate.js` handles several responsibilities, including checking commands, validating deadlines, scheduling reminders, and sending messages.
+
+The `interactionCreate.js` file handles both slash commands and button interactions. It also repeats similar error-handling code.
+
+**Suggested Improvements:**
+
+The bot could be easier to maintain if input validation, reminder scheduling, and error handling were separated into smaller functions.
+
+### Smoke Test
+
+I created a new test file called `tests/smoke.spec.js` to verify four important bot features:
+
+1. `/ping` responds with latency information.
+2. `/testwelcome` produces a welcome message.
+3. `/reminders` displays an upcoming reminder.
+4. `!addreminder` schedules assignment reminders.
+
+I ran the automated tests using GitHub Actions.
+
+**Results:** All 25 tests passed, including my four new smoke tests.
+
+These tests use simulated Discord interactions, so they do not verify that the live bot sends notifications successfully.
+
+### Findings and Improvements
+
+The automated tests show that the tested bot functions work correctly in the test environment.
+
+However, the bot could be improved by simplifying complex functions, expanding test coverage, and ensuring scheduled reminders survive bot restarts.
+
+### Evidence
+
+**Pull Request #30:** https://github.com/CSS360-2026-Au-E/Team1ReminderBot/pull/30
+
+**Smoke Test File:** `tests/smoke.spec.js`
+
+**Test Results:** 25 passing tests in GitHub Actions.
 ## Cohesion and Coupling
 **Contributor:** Khang Nguyen
 
