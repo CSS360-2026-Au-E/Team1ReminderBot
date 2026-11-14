@@ -17,6 +17,8 @@ This report reviews the bot for design issues, security risks, and possible impr
 - **Analysis areas:** #1 Technical Debt and Code Smells; #7 Unit Tests
 - **Contribution:** Ran ESLint, identified code problems, fixed a test import error, and successfully ran 3 reminder unit tests.
 - **Report section:** [Technical Debt and Unit Tests](#technical-debt-and-unit-tests)
+
+
   
 ## Technical Debt and Unit Tests
 **Contributor:** Sameer Khan
@@ -49,6 +51,37 @@ The bot's reminder tests are working, but there are still some issues to fix. We
 - ESLint: 11 errors, 0 warnings.
 - Unit tests: 7 passing.
 - Fix commit: https://github.com/CSS360-2026-Au-E/Team1ReminderBot/commit/f35f06a
+
+
+### Ethan Frausto
+
+- **Analysis areas:** #4 Test Coverage; #6 Fuzz Testing
+- **Contribution:** Measured coverage for the bot's source files and added seeded fuzz tests for reminder-time input and scheduling.
+- **Report section:** [Test Coverage and Fuzz Testing](#Test-Coverage)(#Fuzz-Testing)
+
+### Test Coverage
+**Contributor:** Ethan Frausto
+I ran the project's Mocha tests with c8. For a reliable number, I scoped coverage to `src/helpers/reminderTime.js`, which is directly exercised by the reminder-time tests. It showed **64.03% statements, 67.74% branches, 60% functions, and 64.03% lines**.
+
+I also tried measuring every file in `src`. That report showed 17.81% statements overall, but it reported 0% for command files that the tests execute and listed the reminder store under a duplicate path. Because the project uses `esbuild-runner`, I do not think that full-source result is reliable. The 64.03% number is specifically for the reminder-time helper, not the whole bot.
+
+The tests cover reminder time parsing and scheduling, reminder storage, and a few slash-command behaviors using fake interactions. Real Discord/network behavior is not covered, so the coverage percentage should not be treated as proof that every bot feature works.
+
+### Fuzz Testing
+**Contributor:** Ethan Frausto
+I added a seeded fuzzer for the reminder-time helper. It checks generated valid offsets, malformed offset strings, and generated reminder plans. The seed makes the runs repeatable if a case fails. Across the three checks it tries 1,500 generated inputs and verifies that offsets stay positive, unique, and ordered, bad offset inputs are rejected, and scheduled times remain ordered and after the current time.
+
+This is a small fuzzer focused on parsing and schedule calculations. It does not test Discord API failures, long-running scheduler behavior, or persistence after a restart.
+
+### Findings and Improvements
+
+The existing tests cover important reminder behavior, but the project did not have a coverage command or generated-input tests. The new coverage script and fuzzer make it easier to notice gaps and edge cases in reminder-time handling. A next step would be tests for scheduler failures and persistent storage.
+
+### Evidence
+
+- Coverage command: `npm run test:coverage` (scoped to `src/helpers/reminderTime.js`).
+- Coverage result: 64.03% statements/lines, 67.74% branches, and 60% functions.
+- Fuzz tests: `tests/reminderTime.fuzz.spec.js` (1,500 deterministic generated cases).
 
 ## Cyclomatic Complexity and Smoke Test
 

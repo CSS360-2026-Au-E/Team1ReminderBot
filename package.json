@@ -7,7 +7,8 @@
     "start": "npm run build && node -r dotenv/config build/app.js",
     "dev": "nodemon",
     "prod": "node build/app.js",
-    "test": "mocha -r esbuild-runner/register ./tests/*.spec.js --exit"
+    "test": "mocha -r esbuild-runner/register ./tests/*.spec.js --exit",
+    "test:coverage": "c8 --reporter=text --all --include='src/helpers/reminderTime.js' mocha -r esbuild-runner/register ./tests/*.spec.js --exit"
   },
   "keywords": [
     "discord",
@@ -23,6 +24,7 @@
     "discord.js": "^14.5.0"
   },
   "devDependencies": {
+    "c8": "^12.0.0",
     "chai": "^4.3.6",
     "dotenv": "^16.0.2",
     "esbuild": "^0.15.18",
