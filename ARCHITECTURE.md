@@ -1,4 +1,4 @@
-``
+
 # Team1ReminderBot Architecture Guide
 
 ## Control Flow Graph – Reminder Command
