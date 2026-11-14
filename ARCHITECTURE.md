@@ -36,3 +36,26 @@ This system context diagram shows the bot operating inside the system boundary w
 
 The architecture keeps concerns separated between the user-facing Discord experience and the bot’s internal logic. Discord handles the communication layer, including slash commands, gateway events, and DMs, while the bot interprets commands, calculates reminder timing, and prepares notifications. This arrangement makes the reminder workflow easier to understand and supports future growth, such as additional reminder features, event handling, or richer user interactions without tightly coupling the external interface to the bot’s core scheduling behavior.
 
+  
+## Data Flow Diagram – View and Complete Reminders
+
+```mermaid
+flowchart LR
+    U[Discord user] -->|/reminders command| D[Discord]
+    D -->|command interaction and user ID| C[src/commands/reminders.js]
+    C -->|user ID query| S[(In-memory reminders array)]
+    S -->|active reminders and history| C
+    C -->|formatted list with Mark done buttons| D
+    D -->|private reminder list| U
+    U -->|clicks Mark done| D
+    D -->|button interaction and user ID| I[src/events/interactionCreate.js]
+    I -->|owner-checked completion update| S
+    S -->|updated reminder state| I
+    I -->|refreshed private list| D
+    D -->|updated list| U
+```
+
+### Explanation
+When a user runs /reminders, Discord sends the interaction and user ID to src/commands/reminders.js. The command requests that user's active reminders and history from src/helpers/reminderStore.js, formats the results, and replies privately with a Mark done button for each active reminder.
+
+When the user clicks Mark done, src/events/interactionCreate.js routes the button interaction to the reminders command. The store checks that the reminder belongs to the clicking user, removes it from the active list, and records when it was marked done. The bot refreshes the private list to show the updated state. Reminder data is held in memory and is lost when the bot restarts.
