@@ -59,3 +59,34 @@ flowchart LR
 When a user runs /reminders, Discord sends the interaction and user ID to src/commands/reminders.js. The command requests that user's active reminders and history from src/helpers/reminderStore.js, formats the results, and replies privately with a Mark done button for each active reminder.
 
 When the user clicks Mark done, src/events/interactionCreate.js routes the button interaction to the reminders command. The store checks that the reminder belongs to the clicking user, removes it from the active list, and records when it was marked done. The bot refreshes the private list to show the updated state. Reminder data is held in memory and is lost when the bot restarts.
+
+## Activity Diagram – User Reminder Process
+
+```mermaid
+flowchart TD
+    A([Start]) --> B[Student opens Discord]
+    B --> C[Student enters a reminder command]
+    C --> D[Discord sends the request to the bot]
+    D --> E{Are the reminder details valid?}
+    E -->|No| F[Bot sends an error message]
+    F --> Z([End])
+    E -->|Yes| G[Bot creates and schedules the reminder]
+    G --> H[Bot sends a confirmation]
+    H --> I[Bot waits until the reminder is due]
+    I --> J[Bot sends a reminder notification]
+    J --> K[Student receives the notification]
+    K --> Z
+```
+
+### Explanation
+
+This activity diagram shows the user experience from creating a reminder to receiving a notification. A student enters a reminder command in Discord. The bot checks the details and either returns an error or creates the reminder. When the scheduled time arrives, the bot sends a notification to the student.
+
+## User Layer
+
+The user layer is the part of Team1ReminderBot that students interact with through Discord. Students can create reminders using `/reminder` and view upcoming and past reminders using `/reminders`.
+
+Discord provides the user interface and passes commands to the bot. The bot's command handlers process the requests, while the reminder scheduling logic determines when notifications are sent. The bot communicates results back to the student through Discord confirmations, error messages, and reminder notifications.
+
+The user layer separates the student-facing interface from the bot's internal processing. This makes it easier for students to use the bot without understanding its code.
+  
