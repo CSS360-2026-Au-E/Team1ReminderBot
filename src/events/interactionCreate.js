@@ -1,3 +1,4 @@
+import reminderStore from "../helpers/reminderStore.js";
 const event = {
   name: "interactionCreate",
   async execute(interaction, client) {
@@ -21,6 +22,39 @@ const event = {
         }
       }
 
+      return;
+    }
+
+
+    if (interaction.isButton() && interaction.customId.startsWith("snooze:")) {
+      const [, reminderId, scheduledTime] = interaction.customId.split(":");
+      const reminder = reminderStore.getAllReminders().find(
+        (item) => item.id === reminderId && item.userId === interaction.user.id
+      );
+
+      if (!reminder || !reminder.history.includes(Number(scheduledTime)) ||
+          reminder.nextRun === Number(scheduledTime) ||
+          reminder.completedAt !== null) {
+        await interaction.reply({
+          content: "This reminder can no longer be snoozed.",
+          ephemeral: true,
+        });
+        return;
+      }
+
+      const success = reminderStore.snoozeReminder(interaction.user.id, reminderId);
+
+      if (success) {
+        await interaction.update({
+          content: `⏰ Reminder: ${reminder.message}\n💤 Snoozed for 5 minutes!`,
+          components: [],
+        });
+      } else {
+        await interaction.reply({
+          content: "Could not snooze this reminder.",
+          ephemeral: true,
+        });
+      }
       return;
     }
 
