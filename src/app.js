@@ -9,8 +9,8 @@ const { Guilds, GuildMembers, GuildMessages, MessageContent } =
 const { User, Message, GuildMember, ThreadMember } = Partials;
 
 const client = new Client({
-  intents: [Guilds, GuildMembers, GuildMessages, MessageContent],
-  partials: [User, Message, GuildMember, ThreadMember],
+  intents: [Guilds, GuildMembers, GuildMessages, MessageContent, GatewayIntentBits.DirectMessages],
+  partials: [User, Message, GuildMember, ThreadMember, Partials.Channel],
 });
 
 client.events = new Collection();

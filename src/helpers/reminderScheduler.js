@@ -1,3 +1,4 @@
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import reminderStore from "./reminderStore.js";
 
@@ -17,7 +18,17 @@ export function startReminderScheduler(client) {
       try {
         const user = await client.users.fetch(reminder.userId);
 
-        await user.send(`⏰ Reminder: ${reminder.message}`);
+        await user.send({
+          content: `⏰ Reminder: ${reminder.message}`,
+          components: [
+            new ActionRowBuilder().addComponents(
+              new ButtonBuilder()
+                .setCustomId(`snooze:${reminder.id}:${reminder.nextRun}`)
+                .setLabel("Snooze 5 min")
+                .setStyle(ButtonStyle.Secondary)
+            ),
+          ],
+        });
 
         markReminderFired(reminder);
       } catch (error) {
