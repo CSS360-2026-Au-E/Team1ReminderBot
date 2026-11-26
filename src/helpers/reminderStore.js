@@ -97,6 +97,22 @@ function snoozeReminder(userId, reminderId, minutes = 5) {
   return true;
 }
 
+function getReminderStats(userId) {
+  const userReminders = reminders.filter(
+    (reminder) => reminder.userId === userId
+  );
+
+  const pending = userReminders.filter(
+    (reminder) => reminder.nextRun !== null
+  ).length;
+
+  const completed = userReminders.filter(
+    (reminder) => reminder.completedAt !== null
+  ).length;
+
+  return { pending, completed };
+}
+
 function getAllReminders() {
   return reminders;
 }
@@ -109,4 +125,5 @@ module.exports = {
   markReminderFired,
   snoozeReminder,
   getAllReminders,
+  getReminderStats,
 };

@@ -73,3 +73,41 @@ describe("Reminder history and recurrence", function () {
       },
     ]);
   });
+
+
+describe("Reminder statistics", function () {
+  it("counts pending and completed reminders for each user", function () {
+    const userId = "stats-test-user";
+    const otherUser = "stats-other-user";
+
+    const pending = store.addReminder(
+      userId,
+      "Pending task",
+      Date.now() + 60000
+    );
+
+    const completed = store.addReminder(
+      userId,
+      "Completed task",
+      Date.now() + 60000
+    );
+
+    store.addReminder(
+      otherUser,
+      "Someone else's task",
+      Date.now() + 60000
+    );
+
+    store.markReminderDone(userId, completed.id);
+
+    assert.deepEqual(store.getReminderStats(userId), {
+      pending: 1,
+      completed: 1
+    });
+
+    assert.deepEqual(store.getReminderStats(otherUser), {
+      pending: 1,
+      completed: 0
+    });
+  });
+});
