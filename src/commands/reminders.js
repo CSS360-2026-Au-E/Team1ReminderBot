@@ -10,7 +10,8 @@ const { getUpcomingReminders, getPastReminders, markReminderDone } = reminderSto
 const REMINDERS_PER_PAGE = 4;
 
 function createReply(userId, requestedPage = 0) {
-  const upcoming = getUpcomingReminders(userId);
+  const upcoming = [...getUpcomingReminders(userId)]
+    .sort((a, b) => a.nextRun - b.nextRun);
   const past = getPastReminders(userId);
   const pageCount = Math.max(1, Math.ceil(upcoming.length / REMINDERS_PER_PAGE));
   const page = Math.min(Math.max(0, requestedPage), pageCount - 1);
@@ -23,7 +24,7 @@ function createReply(userId, requestedPage = 0) {
     ? pageReminders
         .map(
           (reminder) =>
-            `- ${reminder.message} (Next: ${new Date(reminder.nextRun).toLocaleString()})`
+            `- ${reminder.message} (ID: ${reminder.id}) (Next: ${new Date(reminder.nextRun).toLocaleString()})`
         )
         .join("\n")
     : "No upcoming reminders.";
