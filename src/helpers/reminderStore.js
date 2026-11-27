@@ -97,8 +97,53 @@ function snoozeReminder(userId, reminderId, minutes = 5) {
   return true;
 }
 
+function getReminderStats(userId) {
+  const userReminders = reminders.filter(
+    (reminder) => reminder.userId === userId
+  );
+
+  const pending = userReminders.filter(
+    (reminder) => reminder.nextRun !== null
+  ).length;
+
+  const completed = userReminders.filter(
+    (reminder) => reminder.completedAt !== null
+  ).length;
+
+  return { pending, completed };
+}
+
 function getAllReminders() {
   return reminders;
+}
+
+function searchReminders(userId, keyword) {
+  if (typeof keyword !== "string" || !keyword.trim()) {
+    return [];
+  }
+
+  return reminders.filter(
+    (reminder) =>
+      reminder.userId === userId &&
+      reminder.message.toLowerCase().includes(keyword.trim().toLowerCase())
+  );
+}
+
+
+function clearCompletedReminders(userId) {
+  let cleared = 0;
+
+  for (let i = reminders.length - 1; i >= 0; i--) {
+    if (
+      reminders[i].userId === userId &&
+      reminders[i].completedAt !== null
+    ) {
+      reminders.splice(i, 1);
+      cleared++;
+    }
+  }
+
+  return cleared;
 }
 
 module.exports = {
@@ -109,4 +154,7 @@ module.exports = {
   markReminderFired,
   snoozeReminder,
   getAllReminders,
+  getReminderStats,
+  searchReminders,
+  clearCompletedReminders,
 };
