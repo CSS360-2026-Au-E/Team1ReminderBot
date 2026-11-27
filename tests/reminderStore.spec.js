@@ -128,3 +128,28 @@ describe("Reminder search", function () {
     assert.equal(store.searchReminders(userId, "missing-word").length, 0);
   });
 });
+
+describe("Clear completed reminders", function () {
+  it("clears only the user's completed reminders", function () {
+    const userId = "clear-test-user";
+    const otherUser = "other-clear-user";
+
+    const completed = store.addReminder(
+      userId, "Completed task", Date.now() + 60000
+    );
+    const pending = store.addReminder(
+      userId, "Pending task", Date.now() + 60000
+    );
+    const other = store.addReminder(
+      otherUser, "Other task", Date.now() + 60000
+    );
+
+    store.markReminderDone(userId, completed.id);
+    store.markReminderDone(otherUser, other.id);
+
+    assert.equal(store.clearCompletedReminders(userId), 1);
+    assert.ok(store.getAllReminders().includes(pending));
+    assert.ok(store.getAllReminders().includes(other));
+    assert.ok(!store.getAllReminders().includes(completed));
+  });
+});

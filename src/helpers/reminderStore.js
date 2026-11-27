@@ -130,6 +130,22 @@ function searchReminders(userId, keyword) {
 }
 
 
+function clearCompletedReminders(userId) {
+  let cleared = 0;
+
+  for (let i = reminders.length - 1; i >= 0; i--) {
+    if (
+      reminders[i].userId === userId &&
+      reminders[i].completedAt !== null
+    ) {
+      reminders.splice(i, 1);
+      cleared++;
+    }
+  }
+
+  return cleared;
+}
+
 module.exports = {
   addReminder,
   getUpcomingReminders,
@@ -140,4 +156,5 @@ module.exports = {
   getAllReminders,
   getReminderStats,
   searchReminders,
+  clearCompletedReminders,
 };
