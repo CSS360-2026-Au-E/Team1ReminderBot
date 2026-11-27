@@ -111,3 +111,20 @@ describe("Reminder statistics", function () {
     });
   });
 });
+
+describe("Reminder search", function () {
+  it("finds reminders by keyword for the correct user", function () {
+    const userId = "search-test-user";
+    const otherUser = "another-search-user";
+
+    store.addReminder(userId, "Finish homework", Date.now() + 60000);
+    store.addReminder(userId, "Buy groceries", Date.now() + 60000);
+    store.addReminder(otherUser, "Homework for someone else", Date.now() + 60000);
+
+    const results = store.searchReminders(userId, "HOMEWORK");
+
+    assert.equal(results.length, 1);
+    assert.equal(results[0].message, "Finish homework");
+    assert.equal(store.searchReminders(userId, "missing-word").length, 0);
+  });
+});

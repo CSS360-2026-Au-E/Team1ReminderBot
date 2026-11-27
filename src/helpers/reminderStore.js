@@ -117,6 +117,19 @@ function getAllReminders() {
   return reminders;
 }
 
+function searchReminders(userId, keyword) {
+  if (typeof keyword !== "string" || !keyword.trim()) {
+    return [];
+  }
+
+  return reminders.filter(
+    (reminder) =>
+      reminder.userId === userId &&
+      reminder.message.toLowerCase().includes(keyword.trim().toLowerCase())
+  );
+}
+
+
 module.exports = {
   addReminder,
   getUpcomingReminders,
@@ -126,4 +139,5 @@ module.exports = {
   snoozeReminder,
   getAllReminders,
   getReminderStats,
+  searchReminders,
 };
