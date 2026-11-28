@@ -4,11 +4,12 @@ const WEEK = 7 * DAY;
 // Temporary storage while the bot is running.
 const reminders = [];
 
-function addReminder(userId, message, time, repeat = "none") {
+function addReminder(userId, message, time, repeat = "none", place = null) {
   const reminder = {
     id: `${Date.now()}-${Math.random()}`,
     userId,
     message,
+    place: typeof place === "string" ? place.trim() || null : null,
     nextRun: new Date(time).getTime(),
     repeat,
     history: [],
@@ -32,6 +33,20 @@ function getUpcomingReminders(userId) {
     (reminder) =>
       reminder.userId === userId &&
       reminder.nextRun !== null
+  );
+}
+
+function getUpcomingRemindersByPlace(userId, place) {
+  const normalizedPlace = String(place ?? "").trim().toLowerCase();
+
+  if (!normalizedPlace) return [];
+
+  return reminders.filter(
+    (reminder) =>
+      reminder.userId === userId &&
+      reminder.nextRun !== null &&
+      typeof reminder.place === "string" &&
+      reminder.place.trim().toLowerCase() === normalizedPlace
   );
 }
 
@@ -149,6 +164,7 @@ function clearCompletedReminders(userId) {
 module.exports = {
   addReminder,
   getUpcomingReminders,
+  getUpcomingRemindersByPlace,
   getPastReminders,
   markReminderDone,
   markReminderFired,
