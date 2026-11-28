@@ -153,3 +153,69 @@ describe("Clear completed reminders", function () {
     assert.ok(!store.getAllReminders().includes(completed));
   });
 });
+
+describe("Location reminders", function () {
+  it("stores a place and defaults to no place", function () {
+    const withPlace = store.addReminder(
+      "place-save-test",
+      "Return my book",
+      Date.now() + 60000,
+      "none",
+      "Library"
+    );
+    const withoutPlace = store.addReminder(
+      "no-place-test",
+      "Study",
+      Date.now() + 60000
+    );
+
+    assert.equal(withPlace.place, "Library");
+    assert.equal(withoutPlace.place, null);
+  });
+
+  it("finds active reminders by place only for the matching user", function () {
+    const userId = "place-owner-test";
+    const matching = store.addReminder(
+      userId,
+      "Return my book",
+      Date.now() + 60000,
+      "none",
+      "Library"
+    );
+
+    store.addReminder(
+      "different-user-test",
+      "Return my book",
+      Date.now() + 60000,
+      "none",
+      "Library"
+    );
+    store.addReminder(
+      userId,
+      "Buy groceries",
+      Date.now() + 60000,
+      "none",
+      "Market"
+    );
+
+    const completed = store.addReminder(
+      userId,
+      "Pick up a hold",
+      Date.now() + 60000,
+      "none",
+      "Library"
+    );
+    store.markReminderDone(userId, completed.id);
+
+    const results = store.getUpcomingRemindersByPlace(userId, " library ");
+
+    assert.deepEqual(
+      results.map((reminder) => reminder.id),
+      [matching.id]
+    );
+    assert.deepEqual(
+      store.getUpcomingRemindersByPlace(userId, "Unknown place"),
+      []
+    );
+  });
+});
